@@ -1,0 +1,884 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : cOpenOfficeWriter
+ major_version : 28
+ minor_version : 0
+ type : 4
+ description : ""
+ subtype : 0
+class :
+ identifier : 0x19d9c1bf053939fe
+ internal_properties : CAAAAAgAAAB2/vstTMCJbS/hlxjFxirSqKvCUuv8YxgpWyl7S3iA
+ code_elements :
+  internal_properties : CAAAAAgAAAD9uuRmnUBWyIM5le+W57vkPnaOSbEanqe9hnQW1dcxoGjnCpMOWrdz9ZibdtMn3uATRK9rn7GTN+D1A8FteLKfTiNCHAc75rbDUiZNij0=
+  type_code : 10
+  p_codes :
+   -
+     internal_properties : CAAAAAgAAAC7/aL5SVMfFh/sL0ocJ0gZ+w18TOiNY9O3qptY2PUvByFENoBrCLn9uMMjJLA+1Q6f6lrQ0HSOYCIJjCH81KJAaf2A1/Hw5KSIKsYwskZ8Bsdl1P/GX5IjVFQheFOFO6ABQYN9PuhaItTmB1w=
+     code : |1+
+      
+      //
+      // Implement the cEditor interface for OpenOffice Writer
+      //
+      cOpenOfficeWriter is Class
+      	inhérits of cEditor
+      	
+      // Private members
+      PRIVATE
+      	m_oDesktop        is object OLE dynamic
+      	m_oDocument       is object OLE dynamic
+      	m_oMyCursor     is object OLE dynamic
+      	m_bPrevSearch     is boolean
+      END
+      
+     type : 131072
+  procedures :
+   -
+     name : Constructor
+     procedure_id : 1862732947065027070
+     type_code : 27
+     code : |1-
+      PROCEDURE Constructor()
+      
+      StartService()
+     type : 589824
+   -
+     name : Destructor
+     procedure_id : 1862732947065092606
+     type_code : 28
+     code : |1-
+      PROCEDURE Destructor()
+      m_oDesktop>>Terminate()
+      Ancestor:Destructor() 
+     type : 655360
+   -
+     name : SaveAs
+     internal_properties : CAAAAAgAAABQfxUmfq7/lMFKb7I45AecLwoT5xsVoBphtLeeb9FWRK7swL5BRGd9xG1kYRpZA/V/oKAyLFKJxDa3bI5G1EqmreRlQSrkZpK7MLIVeeqXfVTGo66hVQC7OjUTIFMh854+MSNOsHAo/wBpqekuWR6/2gxr1ypyOfKIm4eCwddtk0TcfW6UbJLbqdh3pXW39pEdmpfTxeSH7T3uyD2gvrrkUsLdqg==
+     procedure_id : 1862736082391358877
+     type_code : 12
+     code : |1-
+      // Summary: Save a document under a specific name
+      // Syntax:
+      //SaveAs ([<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (string): Optional path where the document will be saved
+      // Return value:
+      // 	None
+      //// Example:
+      // SaveAs("C:\My Documents\Text.rtf")
+      //
+      PROCEDURE VIRTUAL SaveAs(sFullPath is string="")
+      
+      // Local variables
+      mNoArgs is array of 0 variant
+      sNameDocument1,sNameDocument2 are strings
+      
+      // Is there an active document
+      IF IsOpened()=False THEN
+      	Error("No OpenOffice Writer document is opened.","Unable to save.")
+      	sNameDocument1 = ""
+      ELSE
+      	IF sFullPath <> "" THEN
+      		sNameDocument1 = sFullPath
+      	ELSE
+      		sNameDocument1 = fSelect(fCurrentDir, "", "Save as...", "OpenOffice Writer (*.odt)"+TAB+"*.odt", "*.odt", fselCreate)
+      	END
+      	
+      	IF sNameDocument1 <> "" THEN
+      		// Format the path of the file
+      		sNameDocument2 = "file:///"+Replace(sNameDocument1,"\","/")
+      		
+      		// Save the document
+      		m_oDocument>>storeToURL(sNameDocument2, mNoArgs)
+      	END	
+      END
+      
+      RESULT sNameDocument1
+     type : 458752
+   -
+     name : Save
+     internal_properties : CAAAAAgAAACihLJIDl5BGDZ/TOTcjJZjRChdvAftkewZ7N4z28VQPCgJ7b6mJSsvdxkz/NkWRBZlHPQZ93Ax2xp0y06J/Cx+QwHlPeApZC1l6rx4mqkRJ5lLYiKJgPTQ82RRRq00OUekNl7EMElMON2kkTkMJtL+9onOoV7/HwWrlMkeZaLXV0+uvaVJzMFbRabawnxtgDiX2xozAw==
+     procedure_id : 1862736477528507786
+     type_code : 12
+     code : |1+
+      // Summary: Saves the current document
+      // Syntax:
+      // Save ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // Save()
+      //
+      PROCEDURE VIRTUAL Save()
+      
+      // Is there an active document
+      IF IsOpened()=False THEN
+      	Error("No OpenOffice Writer document is opened.","Unable to save.")
+      	RETURN
+      END
+      
+      // Record
+      m_oDocument>>Store()
+      
+     type : 458752
+   -
+     name : IsModified
+     procedure_id : 1862736657917242020
+     type_code : 12
+     code : |1+
+      // Summary: Indicates whether the document was modified
+      // Syntax:
+      //[ <Result> = ] IsModified ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	Undefined type: // True if modified, False otherwise
+      //// Example:
+      // IsModified()
+      //
+      PROCEDURE VIRTUAL IsModified()
+      
+      RESULT m_oDocument>>isModified
+     type : 458752
+   -
+     name : CloseDocument
+     internal_properties : CAAAAAgAAABYA3VRhWOK0aCLH7ZuEG9qWoypHWU2mfWlA/6GyLLFYRnX9bDeNjKBQo05DIirCKt8XVG75zGTP5MbeOVWXpxv1nCWVim200XurUPOfCjDsGNYQPN6ZCgR/sAmMxNhExFBLBD8uSFTS7vTReQXmzzpTZj8aXbTd9Z3y0HXH/1Sb0rI
+     procedure_id : 1862736752406675619
+     type_code : 12
+     code : |1-
+      // Summary: Closes the current document
+      // Syntax:
+      //CloseDocument ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // Close()
+      //// Automatic process of exceptions:   run CASE EXCEPTION:
+      //
+      
+      PROCEDURE VIRTUAL CloseDocument()
+      
+      IF m_oDocument <> Null THEN
+      	m_oDocument>>Dispose()
+      	m_oDocument = Null
+      END
+      
+      CASE EXCEPTION:
+      // No action, the document may have been closed manually
+     type : 458752
+   -
+     name : StartService
+     internal_properties : CAAAAAgAAACNjvm1f6AZw03KUBQG1glqSO6Vm4TsLOfdd/pFLUAr/ywSg0AWrKJa00/92+W0FKMtmXUNtKArA5RA7/bxoCnMGxA5A0s2MGndI9ukaogGqSMIbEbWS3UfnOsNyCU/Yz5AY8EA7AzMI2T93bfCrbIz2AJlARZeP7jSWeNGudd9MZgiZYjotOcmDRCtVC+1thjULhYMrsqg6p7rtjv+MJSIfAXANdV6f19BN1fYIDgCmEDjYFc=
+     procedure_id : 1862736889845726799
+     type_code : 12
+     code : |1+
+      // Summary: Instantiates the OLE objects
+      // Syntax:
+      //StartService ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE PRIVATE StartService()
+      
+      HourGlass(True)
+      
+      WHEN EXCEPTION IN
+      	// Create an OpenOffice service if necessary
+      	m_oApplication = GetActiveObject("com.sun.star.ServiceManager")
+      	IF m_oApplication = Null THEN
+      		m_oApplication = new object OLE ("com.sun.star.ServiceManager")
+      	END
+      	
+      	m_oDesktop = GetActiveObject("com.sun.star.frame.Desktop")
+      	IF m_oDesktop = Null THEN
+      		m_oDesktop = m_oApplication>>createInstance("com.sun.star.frame.Desktop")
+      	END
+      DO
+      	EndProgram("OpenOffice is not installed properly on your computer.", "OpenOffice (or Microsoft Word) is required in order for this example to operate.")
+      END
+      
+      HourGlass(False)
+     type : 458752
+   -
+     name : IsOpened
+     procedure_id : 1862737048759684495
+     type_code : 12
+     code : |1+
+      // Summary: Indicates whether a document is opened
+      // Syntax:
+      //[ <Result> = ] IsOpened ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean: // True if opened, False otherwise
+      //// Example:
+      // IsOpened()
+      //
+      PROCEDURE VIRTUAL IsOpened()
+      
+      WHEN EXCEPTION IN	
+      	//Attempt to access the active sheet of the document
+      	m_oDocument>>CurrentController>>ViewCursor()	
+      	RESULT True
+      DO
+      	delete m_oDocument
+      	RESULT False
+      END
+     type : 458752
+   -
+     name : EditorOpenDocument
+     internal_properties : CAAAAAgAAAAVJmE9p8jz63XimGzyNuVeeB72Q+BgKOPPac5DLwZFEQJcIHzyOPJu5wu5t5W4PHvRraXR0CTrRxB8i7rZXNk0NywBn3eC+K15/8+wOsTOeRf8XEpSP8UrKH9rlpe1ufAaZedGzmIS6Z7Di+3UwyilKrzTvxAk/f50x7FcU21Te0IUG/Z6Wp2kv05rsgmLVLrOdzcBgQ/5BbWm3/C9eVvhGaMap6O0sVlP4eGypkBaIMhr+M8=
+     procedure_id : 1862737297867910886
+     type_code : 12
+     code : |1+
+      // Summary: Opens a document
+      // Syntax:
+      //[ <Result> = ] EditorOpenDocument ( [<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (ANSI string - default value=""): Path of the document
+      // Example:
+      // Open()
+      //
+      // Return value:
+      // 	boolean:    // True if OK, False otherwise
+      PROCEDURE VIRTUAL EditorOpenDocument(sFullPath is string="")
+      
+      mNoArgs is array of 0 variant
+      sFormattedPath is string
+      
+      IF sFullPath ~= "" THEN
+      	sFullPath = fSelect("", "", "Select a file...", "OpenOfficeWriter 1.0 (*.sxw)" + TAB + "*.sxw" + CR + "OpenOfficeWriter 2.0 (*.odt)" + TAB + "*.odt" + CR + "Microsoft Word (*.doc)" + TAB + "*.doc", "*.odt")
+      END
+      
+      IF fFileExist(sFullPath) THEN	
+      	// Format the path of the file
+      	sFormattedPath = "file:///"+Replace(sFullPath,"\","/")
+      	
+      	// Open the file in OpenOffice Writer
+      	m_oDocument = m_oDesktop>>LoadComponentFromURL(sFormattedPath, "_blank", 0, mNoArgs)
+      	
+      	IF m_oDocument <> Null THEN
+      		RESULT True
+      	END
+      END
+      
+      RESULT False
+      
+     type : 458752
+   -
+     name : NewDocument
+     internal_properties : CAAAAAgAAAAYiCQvknLSK3BKmvfzSEqGMZltnGQ+0HLaGicnEVTareuEsPEWtEKxGIN4oaayEOPD87V5NIHzzJSMd5WC6R6R2S60kZIoRJZN959sGpONKVyiR75Tc+B25l09XCwTnFZOyNRrWm7pKXVXThi8AjbpXmFSNlrSwtKX99qxQ7wV73h/pC/OjvhQJDrof7+ktJqmW2GjtPy1UDn5E36uyUpjWcbTcGeYGfec+y5rfLyclG3qjqDUXlvH5Op1LS/2owgb
+     procedure_id : 1862737443896898611
+     type_code : 12
+     code : |1+
+      // Summary: New document
+      // Syntax:
+      //[ <Result> = ] NewDocument ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean:   // 	None
+      //// Example:
+      // NewDocument()
+      //
+      PROCEDURE VIRTUAL NewDocument()
+      
+      // Variable
+      mNoArgs is array of 0 variant
+      
+      // Create a new OpenOffice Writer document
+      WHEN EXCEPTION IN
+      	m_oDocument = m_oDesktop>>LoadComponentFromURL("private:factory/swriter", "_blank", 0, mNoArgs)	
+      DO
+      	//if the last instance of the exe was closed, the m_oDesktop object may be empty, therefore it must be re-created
+      	StartService()
+      	m_oDocument = m_oDesktop>>LoadComponentFromURL("private:factory/swriter", "_blank", 0, mNoArgs)	
+      END
+      
+      
+      RESULT True
+     type : 458752
+   -
+     name : Paste
+     internal_properties : CAAAAAgAAAA6DMqQIF710OJHaIjomEIv8KBNyDsV7XydzFpX/9Gc0AwxLUpCBcdv+xk/yGW62LIpZFTdW/CFk/acbwpdgEjK51n1cWSRaD1p8jL6GPf7gXOlPBw/zsYmBdY/OFO6s5lGSHAmJre+th/Wr1ti3JzYILuIe3y9wav1np9og6CZkQnYv1ffMqtJP2BQdALjCmq/g7Krmw==
+     procedure_id : 1862740317230164316
+     type_code : 12
+     code : |1-
+      // Sumary: Paste the clipboard content in the document
+      // Syntax:
+      //Paste ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // Paste()
+      //
+      PROCEDURE VIRTUAL Paste()
+      
+      // Variable
+      arrmNoArgs is array of variant
+      
+      oDispatchHelper is object OLE dynamic = m_oApplication>>createInstance("com.sun.star.frame.DispatchHelper")
+      oFrame is object OLE dynamic = m_oDocument>>getCurrentController()>>getFrame()
+      
+      // Paste by the dispatcher
+      oDispatchHelper>>executeDispatch(oFrame, ".uno:Paste", "", 0, arrmNoArgs)
+      
+      // Freeing
+      delete oDispatchHelper
+      delete oFrame
+     type : 458752
+   -
+     name : Copy
+     internal_properties : CAAAAAgAAABecQMxdPz9nuGqLQa0gAuAU0bzN8FIQDrhdJc+L1F2hM4MIN5hpAedhO2EwZrZo3XfgMCSzHIppDa3DC6G1GqmjURFYYoEBjJ7MFJ1+eq3fbSmcz4xxXDrSqWjcIMR466uwbMeACDY75AZ+XleCU5Pyhy7Z7riqWIYCxcScUedYzTsTf4kHEIL+QhHtWXnIywKVzCMOHkcAKDhWY7Ha5ENYNDTpA==
+     procedure_id : 1862740824036423479
+     type_code : 12
+     code : |1-
+      // Summary: Copies the selected text
+      // Syntax:
+      //Copy ([<bToClipboard> is boolean])
+      //
+      // Parameters:
+      //	bToClipboard (boolean - default value=0): The text will be stored in the clipboard if set to True
+      // Return value:
+      // 	None
+      //// Example:
+      // Copy(True)
+      //
+      PROCEDURE VIRTUAL Copy(bToClipboard is boolean <useful> = False)
+      
+      // Variable
+      arrmNoArgs is array of variant
+      
+      oDispatchHelper is object OLE dynamic = m_oApplication>>createInstance("com.sun.star.frame.DispatchHelper")
+      oFrame is object OLE dynamic = m_oDocument>>getCurrentController()>>getFrame()
+      
+      // Copy by the dispatcher
+      oDispatchHelper>>executeDispatch(oFrame, ".uno:Copy", "", 0, arrmNoArgs)
+      
+      // Freeing
+      delete oDispatchHelper
+      delete oFrame
+     type : 458752
+   -
+     name : Cut
+     internal_properties : CAAAAAgAAAD0m7lHimKPZF8Ix2SWdgGeCXhZtZcxvMZb/uMcHdeMUkiSKt61sE9Jfic4x7x/bb+1Yv6+LBJJAOS9PADcioAUG87Pkb7oPtqVYoJvJ6j1s948DJPsArGqNdRUhZrqjttnMjiHr3Eluq8U+lal0hWQjxl4cGGLZmnDguQbpPR8jNlRMudDvf++3FeUbvhUYY5kYYLqvuOC7kLLuxRF4Rub7mZ5Dg==
+     procedure_id : 1862741571360907139
+     type_code : 12
+     code : |1-
+      // Summary: Cuts the selected text
+      // Syntax:
+      // Cut ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL Cut()
+      
+      // Variable
+      arrmNoArgs is array of variant
+      
+      oDispatchHelper is object OLE dynamic = m_oApplication>>createInstance("com.sun.star.frame.DispatchHelper")
+      oFrame is object OLE dynamic = m_oDocument>>getCurrentController()>>getFrame()
+      
+      // Copy by the dispatcher
+      oDispatchHelper>>executeDispatch(oFrame, ".uno:Cut", "", 0, arrmNoArgs)
+      
+      // Freeing
+      delete oDispatchHelper
+      delete oFrame
+     type : 458752
+   -
+     name : Print
+     internal_properties : CAAAAAgAAAAcwQc49pxnPq+GnHKTjuvBXY2rTQeyjTJjzWPp1u1nBFcmXRQSSKtVNEcm7IjC+3HleJej+WAso7E/JXLbJK2EsUoqJ5L8jqSLsI+HVTeVXgFgLBuN9goZxjL++YUSx0Xe/x6nMofa9QCsoO5mTuYscLSuHg4bj9SkwoTFc5xhRBYIIPXoZzLvf4NkmPts98uZ0BCYgdMJG0j25FMljoJ2i9Nf
+     procedure_id : 1862742039512451325
+     type_code : 12
+     code : |1+
+      // Summary: Prints the current document
+      // Syntax:
+      //Print ([<nNbCopies> is int [, <sPageList> is string]])
+      //
+      // Parameters:
+      // 	nNbCopies (integer - default value=1): Number of copies
+      //	sPageList (string): List of pages
+      // Return value:
+      // 	None
+      //// Example:
+      // Print()
+      //
+      PROCEDURE VIRTUAL Print(nNbCopies is int=1,sPageList is string = "")
+      
+      // Configure the printout
+      PrintSettings is array of 1 object Automation dynamic
+      
+      // Number of copies for the document
+      PrintSettings[1] = m_oApplication>>Bridge_GetStruct("com.sun.star.beans.PropertyValue")
+      PrintSettings[1]>>Name = "CopyCount"
+      PrintSettings[1]>>Value = nNbCopies
+      
+      // Printed pages
+      IF sPageList<>"" THEN
+      	ArrayAdd(PrintSettings)
+      	PrintSettings[2] = m_oApplication>>Bridge_GetStruct("com.sun.star.beans.PropertyValue")
+      	PrintSettings[2]>>Name = "Pages"
+      	PrintSettings[2]>>Value = sPageList
+      END
+      
+      // Effective printout
+      m_oDocument>>print(PrintSettings)
+     type : 458752
+   -
+     name : InsertImage
+     internal_properties : CAAAAAgAAAAUyQ8XBjazOKm+YgaFkKHRo+22LUdSjXLjbSNpdk1HhDemXXRS6CvVtKfmLCjiW/HFeBeDOcBsY/EfZfI7BI0EEcoqh1KczqSLkE/H9Vf13mHwnAud5jqpNgIuKfUiFxVuDw6XwjdKxTA80F7Wnna8wARezl7LP+SUErS1Y2wxlKaYkGX4F6I/75MUyOu8B1tsCyX9LmygsN1dXdhSb2tek9tX
+     procedure_id : 1862742404584822177
+     type_code : 12
+     code : |1+
+      // Summary: Inserts an image into the document
+      // Syntax:
+      //InsertImage ([<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (string): Path of the image
+      // Return value:
+      // 	None
+      //// Example:
+      // InsertImage()
+      //
+      PROCEDURE VIRTUAL InsertImage(sFullPath is string="")
+      
+      // Variable
+      sImagePath is string
+      
+      // Select an image
+      IF sFullPath ~= "" THEN
+      	sImagePath = fImageSelect(fCurrentDir(),"","Select an image.","JPEG (*.JPG)"+ TAB +"*.jpg"+ CR +"BMP (*.BMP)"+ TAB +"*.bmp")
+      ELSE
+      	sImagePath = sFullPath
+      END
+      
+      // Selected image?
+      IF sImagePath <> "" THEN
+      	// Retrieve the area selected by the cursor
+      	m_oMyCursor = m_oDocument>>CurrentController>>ViewCursor()
+      	
+      	// Load the image
+      	oMyImage is object OLE dynamic = m_oDocument>>createInstance("com.sun.star.text.GraphicObject")
+      	oMyImage>>GraphicURL = "file:///"+Replace(sImagePath,"\","/")
+      	
+      	// Insert the image at cursor location.
+      	m_oDocument>>Text>>insertTextContent(m_oMyCursor, oMyImage, True)
+      END
+     type : 458752
+   -
+     name : InsertText
+     procedure_id : 1862743383837462015
+     type_code : 12
+     code : |1+
+      // Summary: Inserts some text into the document
+      // Syntax:
+      //InsertText (<sText> is string)
+      //
+      // Parameters:
+      //	sText (string): Text to insert
+      // Return value:
+      // 	None
+      //// Example:
+      // InsertText("This is some text")
+      //
+      PROCEDURE VIRTUAL InsertText(sText is string)
+      
+      m_oMyCursor = m_oDocument>>CurrentController>>ViewCursor>>Start
+      m_oDocument>>Text>>insertString(m_oMyCursor,sText,False)
+     type : 458752
+   -
+     name : SearchReplace
+     internal_properties : CAAAAAgAAAB2GTvOzASp0te4MeCO+pHupQwVgRE8rDabHsPMjaf84njSOr71EO/pjvfoBzz/jd8V0n5OHAJZkOS9HHDMmhBEa64fEd5ofpqFMjLv56j10z6stGsEunny/fzsLYLSNhM/GkDfByntwncc8l4Nuh2Ih0EgyFkDzhHrChwjbHxE5LG5Wh/71QeGpN8slmD8/qkxpq9vBSTD6ZnWyBlgFj4IeOj7jA==
+     procedure_id : 1862745222083631028
+     type_code : 12
+     code : |1+
+      // Summary: Finds and replaces a word by another one
+      // Syntax:
+      //SearchReplace (<sWord> is string, <sWordBis> is string)
+      //
+      // Parameters:
+      //	sWord (string): Sought word
+      //	sWordBis (string): Word that replaces it
+      // Return value:
+      // 	None
+      //// Example:
+      // SearchReplacer("word1","word2")
+      //
+      PROCEDURE VIRTUAL SearchReplace(sWords is string, sWordBis is string)
+      
+      // Create an object named ISeek that will contain all the required parameters for replacement
+      oISeek is object OLE dynamic = m_oDocument>>createReplaceDescriptor()
+      
+      // Define the tag that must be found in the OpenOffice Word document
+      oISeek>>SearchString=sWords
+      
+      // Define the replacement value
+      oISeek>>ReplaceString=sWordBis
+      
+      // The search is case sensitive (uppercase/lowercase characters)
+      oISeek>>SearchCaseSensitive=True
+      
+      // Only search for words
+      oISeek>>SearchWords=False
+      
+      // Backward Search
+      oISeek>>SearchBackwards=False
+      
+      // Perform a search with the method of regular expressions
+      oISeek>>SearchRegularExpression=False
+      
+      // Search for the paragraphs with a style given by SearchString
+      oISeek>>SearchStyles=False
+      
+      // Search for a text similar to the sought text
+      oISeek>>SearchSimilarity=False
+      
+      // Replace all the tags 
+      m_oDocument>>replaceAll(oISeek)
+      
+     type : 458752
+   -
+     name : Select
+     procedure_id : 1862747949387974590
+     type_code : 12
+     code : |1+
+      // Summary: Selects some text
+      // Syntax:
+      //Select (<nNbCharac> is int)
+      //
+      // Parameters:
+      //	nNbCharac (integer): Number of characters to select
+      // Return value:
+      // 	None
+      //// Example:
+      // Select(5)
+      //
+      PROCEDURE VIRTUAL Select(nNbCharac is int)
+      
+      // Retrieve the current position of the cursor
+      m_oMyCursor = m_oDocument>>CurrentController>>ViewCursor
+      
+      // Select some characters located to the right of the cursor
+      m_oMyCursor>>goRight(nNbCharac,True)
+      
+      // Select
+      m_oDocument>>Text>>createTextCursorByRange(m_oMyCursor)
+     type : 458752
+   -
+     name : SelectAll
+     procedure_id : 1862750908620540835
+     type_code : 12
+     code : |1-
+      // Summary: Selects the entire text found in the document
+      // Syntax:
+      // SelectAll ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // SelectAll()
+      //
+      PROCEDURE VIRTUAL SelectAll()
+      
+      // Retrieve the current position of the cursor
+      m_oMyCursor = m_oDocument>>CurrentController>>ViewCursor
+      
+      // Position the cursor at the start of the document
+      m_oMyCursor>>gotoStart(False)
+      
+      // Move the cursor to the end of the document
+      m_oMyCursor>>gotoEnd(True)
+      
+      // Select
+      m_oDocument>>Text>>createTextCursorByRange(m_oMyCursor)
+     type : 458752
+   -
+     name : Available
+     internal_properties : CAAAAAgAAAAxidMvT1dQ7xzpZYKvz3QMei2l4Xgvt6JRVCj7Bn/HRM7DZyXpqLOY6MoHWxnXIq2L+mpi4f7xc14Wta0brB28XAwOKXNUEWCTaLI65orRtlskfXjVmUh7qrWTWutBt5K0t7EgDKx2RbrnFRH+YVprEMrlnxAkB4gSEXOc0eePSpWN6kP7xQdOXAtautY50NBoJzvK
+     procedure_id : 1863108808162969871
+     type_code : 12
+     code : |1-
+      // Summary: Indicates whether OpenOffice Writer is available
+      // Syntax:
+      //[ <Result> = ] Available ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean: // True if available, False otherwise
+      //// Example:
+      // Available()
+      //
+      PROCEDURE GLOBAL Available()
+      
+      // Local variable
+      bExist is boolean = False
+      
+      // Checks the presence of OpenOffice on the computer
+      bExist = RegistryExist("HKEY_LOCAL_MACHINE\SOFTWARE\OpenOffice.org\UNO\InstallPath")
+      IF bExist = False THEN
+      	bExist = RegistryExist("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\swriter.exe")
+      END
+      
+      // OOWriter if not found if OpenOffice is not installed on the computer
+      RESULT bExist
+     type : 458752
+   -
+     name : ActiveDocument
+     procedure_id : 1863130660973194614
+     type_code : 12
+     code : |1+
+      // Summary: To find out whether a document is enabled
+      // Syntax:
+      //[ <Result> = ] DocumentEnabled ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean:  // True if enabled, False otherwise
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL ActiveDocument()
+      
+      WHEN EXCEPTION IN	
+      	// Active object
+      	m_oDocument = m_oDesktop>>getCurrentComponent()
+      	RESULT True	
+      DO
+      	// No document object was found
+      	RESULT False
+      END
+     type : 458752
+   -
+     name : SetStyle
+     procedure_id : 1863171192594442814
+     type_code : 12
+     code : |1-
+      // Summary: Changes the writing style
+      // Syntax:
+      //SetStyle ([<sStyle> [, <sFont> [, <nFontSize> [, <nFontColor>]]]])
+      //
+      // Parameters:
+      //	sStyle: Bold, underlined etc.
+      //	sFont: Name of the font
+      //	nFontSize: Size of the font
+      //	nFontColor (default value=-1): Color of the font
+      // Return value:
+      // 	None
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL SetStyle(sStyle,sFont,nFontSize,nFontColor=-1) <overload>
+      
+      // Retrieve the selected area
+      m_oMyCursor =m_oDocument>>CurrentController>>ViewCursor
+      
+      SWITCH True
+      	CASE sStyle = iItalic : // Italic						
+      		IF m_oMyCursor>>CharPosture=iItalic THEN
+      			m_oMyCursor>>CharPosture=False
+      		ELSE
+      			m_oMyCursor>>CharPosture=iItalic
+      		END	 
+      		
+      	CASE sStyle = iUnderlined : // Underline	
+      		IF m_oMyCursor>>CharUnderline = 1 THEN
+      			m_oMyCursor>>CharUnderline = False
+      		ELSE
+      			m_oMyCursor>>CharUnderline = 1
+      		END	 
+      		
+      	CASE sStyle = iBold : // Bold
+      		IF m_oMyCursor>>CharWeight = 150 THEN
+      			m_oMyCursor>>CharWeight = 100
+      		ELSE
+      			m_oMyCursor>>CharWeight = 150
+      		END
+      		
+      	CASE sStyle = True :// Apply a shadow			
+      		m_oMyCursor>>CharShadowed = True 
+      		
+      	CASE sStyle = False :// Remove the shadow		
+      		m_oMyCursor>>CharShadowed = False
+      		
+      	CASE sFont <> "" : // Name of the font
+      		m_oMyCursor>>CharFontName =sFont
+      		
+      	CASE nFontSize <> "" : // Size of the font
+      		m_oMyCursor>>CharHeight = nFontSize
+      		
+      	CASE nFontColor <> -1 : // Color of the font
+      		iRed, iGreen, iBlue are int
+      		iRed = IntegerPart(nFontColor/65536)
+      		iGreen  = IntegerPart((nFontColor-(iRed*65536))/256)
+      		iBlue  = nFontColor-((iRed*65536)+(iGreen*256))
+      		
+      		m_oMyCursor>>CharColor = RGB(iRed,iGreen,iBlue)	 
+      END
+      
+      // Free the cursor
+      delete m_oMyCursor
+     type : 458752
+   -
+     name : Search
+     internal_properties : CAAAAAgAAAAEikR3lDPRGxYWxpT+pHDzfvDI/93GgZGtLcXuscWiOETuaDHAkzIGeYK1sVr/5hrrXNeh5ugj0rPCDD8NYetI5ACgm1qxOQX482IDZ6DGL1pLVait2G0S7CNqhwW7sEHDfa6Vw/MsSxRw8b3INXZEmOSNHdDtBlEvJ18laT/k+Ws2MBw8yDsKh0kWiOGMOxA67VBlZ3oeiKKmFVPESh/vP2S+k8o9/vWN5kwapcRMkrg5WueQGuTBzWHk2QkEmo1Xnn5XgNmzE7mCnZUHzbu3hCE0O0EgpXKLOsYI5OCh7xVndAeS3nqspk4=
+     procedure_id : 1866505019380435496
+     type_code : 12
+     code : |1+
+      // Summary: Finds a character string in the document
+      // Syntax:
+      //Search (<sText> [, <bToTheTop> [, <bFromBeginning>]])
+      //
+      // Parameters:
+      //	sText: Text to find
+      //	bToTheTop (default value=0): Direction of the search (True for a search toward the top)
+      // 	bFromBeginning (default value=1): True for a search from the beginning
+      // Return value:
+      // 	None
+      //// Example:
+      // Search("text",True)
+      //
+      PROCEDURE VIRTUAL Search(sText,bToTheTop = False, bFromBeginning <useful> = True)
+      
+      // Variable
+      arrmNoArgs is array of objects OLE dynamic
+      
+      oDispatchHelper is object OLE dynamic = m_oApplication>>createInstance("com.sun.star.frame.DispatchHelper")
+      oFrame          is object OLE dynamic = m_oDocument>>getCurrentController()>>getFrame()
+      CoreReflection  is object OLE dynamic = m_oApplication>>createInstance("com.sun.star.reflection.CoreReflection")
+      oPropertyValue  is object OLE dynamic
+      
+      IF m_bPrevSearch <> bToTheTop THEN
+      	m_bPrevSearch = bToTheTop
+      	IF bToTheTop THEN
+      		:MoveCursor(True) 
+      	ELSE
+      		:MoveCursor(False)		
+      	END
+      END
+      
+      // Find
+      CoreReflection>>forName("com.sun.star.beans.PropertyValue")>>createObject(oPropertyValue)
+      oPropertyValue>>Name = "SearchItem.Backward"
+      oPropertyValue>>Value = bToTheTop
+      Add(arrmNoArgs,oPropertyValue)
+      
+      CoreReflection>>forName("com.sun.star.beans.PropertyValue")>>createObject(oPropertyValue)
+      oPropertyValue>>Name = "SearchItem.SearchString"
+      oPropertyValue>>Value = sText
+      Add(arrmNoArgs,oPropertyValue)
+      
+      CoreReflection>>forName("com.sun.star.beans.PropertyValue")>>createObject(oPropertyValue)
+      oPropertyValue>>Name = "SearchItem.ReplaceString"
+      oPropertyValue>>Value = ""
+      Add(arrmNoArgs,oPropertyValue)
+      
+      CoreReflection>>forName("com.sun.star.beans.PropertyValue")>>createObject(oPropertyValue)
+      oPropertyValue>>Name = "Quiet"
+      oPropertyValue>>Value = True
+      Add(arrmNoArgs,oPropertyValue)
+      
+      // Search by dispatcher
+      oFrame = m_oDocument>>getCurrentController()>>getFrame()
+      oDispatchHelper = m_oApplication>>createInstance("com.sun.star.frame.DispatchHelper")
+      oDispatchHelper>>executeDispatch(oFrame, ".uno:ExecuteSearch", "", 0, arrmNoArgs)
+      
+      // Freeing
+      delete oDispatchHelper
+      delete CoreReflection
+      ArrayDeleteAll(arrmNoArgs)
+      
+     type : 458752
+   -
+     name : MoveCursor
+     internal_properties : CAAAAAgAAAD3k469vFSnHvnAxWO57M1evZqO4lU+/p+3Tyt/e5Bcyxcb6IoAFR+XnIfOS++e+X+eBpTXoOClHtIdDoS+PmSPMY/X/jk++227oBj4aEVRrbMIUpIY6Do07QpAmKTV867ih5d42HOy6M3yIHSQkiaX32AeoOyFyWMNAKCN11LvXrtANvUMyX/f/iVaxYW2eqaBYt+BPiSHulI/ZgtDbp+4sQr2fl7Msynro5HEJLZmJkNgeUH9AKN/aYaGQmNBo79WX2fpf6Rj3Dr4dA==
+     procedure_id : 1866568327234089774
+     type_code : 12
+     code : |1-
+      // Summary: Moves the cursor
+      // Syntax:
+      //MoveCursor (<bLeft>)
+      //
+      // Parameters:
+      // 	bLeft: True to the left, False to the right
+      // Return value:
+      // 	None
+      //// Example:
+      // MoveCursor (True)
+      //
+      PROCEDURE PRIVATE MoveCursor(bLeft)
+      
+      // Variable
+      arrmNoArgs is array of objects OLE dynamic
+      
+      oDispatchHelper is object OLE dynamic = m_oApplication>>createInstance("com.sun.star.frame.DispatchHelper")
+      oFrame          is object OLE dynamic = m_oDocument>>getCurrentController()>>getFrame()
+      CoreReflection  is object OLE dynamic = m_oApplication>>createInstance("com.sun.star.reflection.CoreReflection")
+      oPropertyValue  is object OLE dynamic
+      
+      // Move the cursor
+      CoreReflection>>forName("com.sun.star.beans.PropertyValue")>>createObject(oPropertyValue)
+      oPropertyValue>>Name = "Count"
+      oPropertyValue>>Value = 1
+      Add(arrmNoArgs,oPropertyValue)
+      
+      CoreReflection>>forName("com.sun.star.beans.PropertyValue")>>createObject(oPropertyValue)
+      oPropertyValue>>Name = "Select"
+      oPropertyValue>>Value = False
+      Add(arrmNoArgs,oPropertyValue)
+      
+      IF bLeft THEN
+      	oDispatchHelper>>executeDispatch(oFrame,  ".uno:GoLeft", "", 0, arrmNoArgs)
+      ELSE
+      	oDispatchHelper>>executeDispatch(oFrame,  ".uno:GoRight", "", 0, arrmNoArgs)
+      END
+      
+      // Freeing
+      ArrayDeleteAll(arrmNoArgs)
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : CClasse1
+resources :
+ string_res :
+  identifier : 0x19d9c1bf053639ee
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ
+associated_test :
+ name : TEST_cOpenOfficeWriter.wxt

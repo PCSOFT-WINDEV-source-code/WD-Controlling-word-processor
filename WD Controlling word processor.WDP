@@ -1,0 +1,152 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : WD Controlling word processor
+ major_version : 28
+ minor_version : 0
+ type : 4097
+ description : The purpose of the project is to propose a unique class to control a word processor (Microsoft Word or Open Writer)
+ subtype : 0
+project :
+ identifier : 0x0
+ internal_properties : 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
+ configurations :
+  -
+    name : WD Controlling word processor
+    internal_properties : CAAAAAgAAAAFujyXU8eJnCqtWpKIfG+JpI9f7fmfokSgT7Xs25VIXu+qW5lbBzk3QVqlWpgRN4ulXLCxqpmR2k1bXu4VL6NW+PsynTmfCuaNF4B0iwy+QskaH52dxZCmw2egD5WNWNl3Tq4w1Az8tnQM6s9Wg1h84pu07aQ3CeCWVK4YRYlOMC1Y49hrgj99pgEQkY9U8DNqhJsX2voDxcdQMoM6LVFK0IHde2vegPmhaoZ5VNYUJmfaYvrwU+0Gtdr81NNVT1eTtAy/Bmq2F1sujcB2hWj1HZMWNoHOKYRvBWJqmp41zMKG0oDcFsNwXTB8jHGZdlJ8YiCrF2vEY86tixf/WqGgAnZDOifxmucPBVmlZthotF2P+9B6sjWTf4iAVXsfbrs1mJRxHSk2I3MHETGnAxxelahnD7tOY7ULogf35mwN1ORhRijkkOCWy15cQCAnVHti0l5IYmJFvF52yuEnLhoy8J5mOEn80sz71J+MwEAyYK/us/Yx/ZYPkRATEieDyOuZ2/p++nCF0M04ZPQgCGM/PrXNe+0TUYfqzE336/CNq31QlLHIYoDZ2ivLokLNlAgJmmy83DbhfOcHyzQ/8trWjzNO9EHVKHVMANq7lYvPO0H0BbGS50PFUrb8SXz1pVPK8T7gQc9wVBUsn65VDLza86YrABGTV+qiBYycjWw53DyXfUFutEHqA0piw8cR9gLFjK4UKcOktWhM0MILlXGU6sBTcQ/boWfBVEU3ez/f1tzkcLdToCFAdQysh988wGkInZ8YsQph5dkIm68FLfQp75yq/n5+wEBrAjfBKV3/YMAwPyvSETaBAWfCh96JjqkUWc3BTWWc9rQvGuvArtmoB0JzCKUKlaN77MPg29Nh1/ACYcfIbRZT2+4/9S2gOh5AWJkb6qm6aRlMs0bLxYqUlplpR+uCVUsRhh59qWXXWeDeZme8DQgs6U80P7K+548bP8h9ZH0cfnzztHg4T4fDdSvdlglbpbxlztDNuEa+tDCxjcxkHhNSQfc3yxiJFcDrjvqByEqanOqfDUlZcH/8qORUyIYMfH28SRum7TfH7wOna3N2k8YbG5xPJGyTtTKrO9F0hcCNyw2nOQs5PCtKg9guTdj0MEchR0j2a8myVV+8mBhfS+tcLJnlp30SYvP9CQvL6Ylk/sBIhp0L/jniEOtxLN25yRufy/iQmVQPz7jvUfos9rfeuQxRXsOANclUjdym0/KH554xacR7/IxftYYwywuhwh634Pbfz3u/i08GQIzFqTtZ1ZVNY5MNlRlzWRua3NBVTbdreoUjjZn4O9EvIiLtXbbtRWs+7vsFPYwhcHblJTSgf6089ArPvx9qBprpEj8gMBonaB/wBygYwgKK8zYo9fupPLfYioQlYr6NAyJ3gCBXQFUpE8a0+PbX7HQJ2qS6HLPkN5iOzDqWQAXS9+ZAL0Ra88Samz5EDMRFo/0w2UYAxTK8pbpghIu4BtUwO3Heu/D+f2i3xY8W+nsqtgZ4eW+PE25OrdA+DcGY1ehEIG0dMVszHQenw9vQZH7QyDjsyNeLsqgs2slbKyi1PN3lARHFfXt+knfOSyv72ZgYHLy7QeXnXsdpPp1QMTun2onEMnZNHVhJiZRcnH+3WdWP01+1FH7xRefY/zXB6nBGFVgOM5kV0HzuvOaR42+ASgj3F0RGwOoFDKecYwKeXgVN5xPaC+pVYCai9FjMY2HPtgTfyUZIZwyPtcztkf4q6RYAWL4TOUyqbjcgzGabeoJRt/7GyvvE9YcwwbT1ayZVXv0twLqHCz1A6M/ICyTdItwXUoc/SbwpuT4E+NP5VzxQDBUtmj5gOoJFfkX6kvcobH4lSj1e0i6VvIWuQKBeKSymJvg3s2zQ/fBQ0XYkGimNYoJiuU7UJi1QPKDtXFZfEWdOSL8bBJSQXbCm6RrNcroAUJwlvBrzRrdO0BTHUlGl8AdH+nvLJ8pyF3jfRgfH2F25hEGws21HmGnjMsPxrDRORoXHZ9+203QrxK3XaAbvT8/jJVVQ1NLw3jg3tmhpUIzf1K6gz+nFjnroFs+t321eJ/z6tJpJsiqZbvp/aSiaJT8AXjTzfZPsi+btjDLxv8NngCrn9buWZVis7ozVFSDR4ZagnnQtHBcLBmWrSvoRsk6qpe6MPVYoceaEYUJyfaaa3iDW93EMhdr6zl7hz1vkxeTwuqTOh5DBCDad7gtwABW2hALRdFEF+wCMfB3AY972kHtwULIxBUDwtflKIj4ID/0copAoWyu2nj3Z1ysOJiGknxjW8ziMIVpF2xRHIghw4msdQJkGhYZ29FhsLIe8+UDpXUfWUYZNrqmTGJAksRvxBzu9YBRS/Si+ZMfzAjWedaSopKmjK3O3YFcFgYhdxo/40kK4TidDBpLCq1cBROV8XKKXycNUogX3j3eN2HGFfKqnHUTwT1cxySthQf0eDjd966kMKruPWz+mzMnr5mr5CkVYwtstGcqdQM72s8Dq6uEIHMR9ZC8v149hAsBlEOV9Iv7uShTvdPIToKTgCTI9PalOwL0F5zj/AFx3urTOAwPZ+8ZVIhOQoppMMcd+UD8B59NIpMAXRJF/KNjmD+Ec7H+Vi42rO51bL/W5FXx/PSByzRamvz67/bspxiokKqioG3568w5nzlyjlRmnSFC2fqgUcna+blGEREAbRuW34F2n8XA2Z537ib1k8MS8JH33vap8GtgfavZnbybfc+szpeXvEixruK1uIM4ssB1tqIDKk4U3tEZG0LAgbOmqgP8JyAoSgSnpzG5EUBDDXkh8giIig5Ct8OY42EUlfXjnaLnqXc2PPJBPnEUYInIu7yqlaatQTZTeGcJ5E16WPUZ658ld6SzJIxoqwWiyCoP0bS8SQsg8Zjm6zEismLFeCilN3fuak8rIgvj+1mKWz6meU6MBRalae9f5B7TwHN/ElTe3riwLpA14pFhiDVTRITWpdS+UZnswB0fpM7qZeplQGM5ZsffmN7BIfd2hDL6kb/4rIeMbjwn7IMt1ume3Q8+Zd/ZQslvr8dz+ZN7Kwg+YdKmUWNy2DgEyOaLYdKudKJr9w0zI7hxS+DTozoFZ7Wy2ItNjDY703SEErS6q+SvzCVqghFjnnO8BddMzMTuJwFN4FK3z6BCTaUGCmKEEfssEAJ7lZ3LjTJWoFBg9nkmZEwxmHN8ePDM/g+3awgfQ53gtx2+6UyIE+oY7i6DhxX3NfeguVgAW06eYHAd8h4EcJoeUnpzA3tTbndj7QfyPRp4GZnF9yMIXKbWHPWmPE1Cb80S8ZIAnYqJiCs/4o0LZjxZMVBOZvb9dfSpSaibuJULSssxS02Kj3UJASNYY+rOS+Oxmov1ZyJNEKAXYZa5JcTI9K2Xo5v4VgyIvkZP2MY7JA9QoMeJ4OK0YNJI+cLI6lpfb8Q0m2QwsKGrVyv3raf3zg8L8mpyFBZA0YCb8x8NUAN1h1te1Z5/HaSPDJ2zq9CJL/Zuir6VFM64zQgKXX8uVFQEG3JWfU1yNRw10d8iKKsiNLr8Nay209rDHa9NyVEGABELo0+zj2f51Bj92tAv7eX6ZuVvY5PNJQ4XUf6iR03IBBpMMAkCUjhQQKupYHono/LqlsBzRT4nhnNe5vUq64l3QkhCvT1ATNWmQN5bChln+A8IH8foR89vpBbJczEu6clRpcGD3TdrbKpLAOsnVvbkBKQIaBGsWCkT0u/wFcwXOf6JfjX4lraAbi/PjSyE2xq4iPywNQ5D+kRUmOheb8yKeSKXds3xvlZJMS4cXiauVinmQfCoH3ygbennhyaM/dXOPWltxky4/RnNg4OUH6SBoGrDC9lChc3UuXcXivkz6xwPrKbnfC0RLB4/e5vdBQy2wuYr9Q0dE9U6NL9ou3JPLO7C8zt4XFUjJIOlnSeS09a6ArPtZF+d4ToOJse1tqxoAmU4+Ukemi8polgkZy7ioYjvji9YIhLrxNBoGRu0xyod7B4sLwW60pmrPrziPjYkwkZN2Hg5xRj7IvM0X8XXwvprpTxt+cizTghXCKs4IKdz3E9DZf8/QEhPDj9Kl0x2trJSvabORxnNwIq+NayyX70mwfOG5Uw3XwouTDWjELZBSwEXOSqHZ8Xg+/hkLNYACV7u0eGDY+bZMmuwrcaMZuVnPyWoK2hbAFwDnTyk1mpYm/nWiYP5uhCCFWIyrZR4AwdphP0D8VZmi9pNK5uBJ0RAGdHaoEItOyRQO2iByT876Sqsg4h0pxUXcxvSoCKtxwCJd08xeod7sAsCS8iFP0/MM8L6KNjTR2GilqwFIYQSmdtgjEWvFxW2LKgWosXisoFGw8YMcJ8K3bPqi6lr8bmaB0Rio+TXybTjHstRxEehxj/ilNIvCAWOY6zQ8tHjet2XZE82Pov/SFPAzGY5SZHeJvGhz7iI6YHRJyy1hOjdVu9oBgDDrLz8wcjoV/zTK/6t25nnikcBMmBPFBXMKvJX6pfFU5BO7xr+CDmKzbNFrW3sIbAGC0RRetClKpl+56rCnIuZmIyfMRbyHrVkXKzwN2cUMcK2Is3i5mzOovfR1y4O50tX5mcVxSPfLcanc8ByCFu+gW+FTX+7mTchOoRsCkVbbjnvaCJQB19NtZQn42mpB3/p4VvewY4+6X7XGQhF2ql0KpojHbw==
+    configuration_id : 6525402232463915318
+    type : 1
+    generation_name : WD Controlling word processor.exe
+    version :
+     major_version : 22
+     minor_version : 37
+     internal_generation_version : 2
+     autoincrement_version : false
+    icon_filename : .\icon.ico
+    language : 2
+    telemetry :
+     status : disabled
+    new_features_help :
+     name : ""
+     internal_properties : CAAAAAgAAABfK3zmDU7vA9tjyn2YdvNKJwV6WjjcBzKxCwMZWi4xP0kgwVjZolNqWxB7p/ySqdVDl2m8vO7IWqJQ3A==
+ elements :
+  identifier : 0x4c47058307aa9cc0
+  elements :
+   -
+     name : cMicrosoftWord
+     identifier : 0x49d9c1d000067e89
+     internal_properties : CAAAAAgAAADNSSV5RjN7pLNTt8my9xVrYyBudrJ+VDmvOUa7snefoaOtWKdgWPiu3EawCIh4APDYWA==
+     physical_name : .\cMicrosoftWord.wdc
+     type : 4
+   -
+     name : WinDevMessageBox
+     identifier : 0x4850090500bd4d2d
+     internal_properties : CAAAAAgAAABt6UVZZtNbBNenksIQ0EEjcXzIWGV5qNB/oG2cUNi6FiLOYezSbjemgKYQ6KhYIJB4+A==
+     physical_name : .\WinDevMessageBox.WDW
+     type : 2
+   -
+     name : cOpenOfficeWriter
+     identifier : 0x49d9c1c60005566f
+     internal_properties : CAAAAAgAAADYtoCcK1DYg0zgRMa/xpxaBhkltYOPCHa73tno4yZ2Qv4806xjXQO7KRONayulXVO9RQ==
+     physical_name : .\cOpenOfficeWriter.wdc
+     type : 4
+   -
+     name : cEditor
+     identifier : 0x49d9c1af0002fd33
+     internal_properties : CAAAAAgAAACoppCMO2BIUxzwVHYPN7gmrvOdXWWJHcKnLzyFVsPJT/V5kv0T7ZPLOePd21uVbWOttQ==
+     physical_name : .\cEditor.wdc
+     type : 4
+   -
+     name : WIN_Search
+     identifier : 0x49db1d8d0000d441
+     internal_properties : CAAAAAgAAAD8WtTA/6QMHyi8IKLL5HTS8qH5UWv534Oy8q2ohbTgGCAixcpHsV8Xda8plx/RqR/paQ==
+     physical_name : .\WIN_Search.wdw
+     type : 2
+   -
+     name : Global procedures of WD Controlling word processor
+     identifier : 0x49d9c08d00009228
+     internal_properties : CAAAAAgAAADPSyd7yPW97vmdjYP0Bks1XQxEHL5KkemvlfbCl4KIiIiIpeomkj50loB6Rs4C/vLaWg==
+     physical_name : .\Global procedures of WD Controlling word processor.wdg
+     type : 7
+   -
+     name : TEST_cMicrosoftWord
+     identifier : 0x4c7d152c015c068c
+     internal_properties : CAAAAAgAAABUMrz4x7z090DkWPqz/nDOSg1JKSqf2ppILjAlJhZ+goaUu8RfWQe/LReBfwf5gXdBwQ==
+     physical_name : .\TEST_cMicrosoftWord.wxt
+     type : 17
+   -
+     name : WIN_Main
+     identifier : 0x49da1aa80000876f
+     internal_properties : CAAAAAgAAABWPL7iwb72+UYWdhRtgc6YDFkLw+NAuKa2mf7c/C1vqVfbDHOtC7XtHxmDfQX7h3lDww==
+     physical_name : .\WIN_Main.wdw
+     type : 2
+   -
+     name : TEST_cOpenOfficeWriter
+     identifier : 0x4c7d1540015e5759
+     internal_properties : CAAAAAgAAAAacMLG5aIKFdKyErDJP074UOGfd0Z7n2akJ2euIQuJZ5GxvsFRr1EJe6UfmRnXoxX/Bw==
+     physical_name : .\TEST_cOpenOfficeWriter.wxt
+     type : 17
+   -
+     name : WinDevDialogBox
+     identifier : 0x4850090e00c47258
+     internal_properties : CAAAAAgAAACc+vQgn8Rsf8yAqwyZ+NcbALGPB6IGV7CPvLRVDRv512GB2we4AD6vmY8J978xyT+JiQ==
+     physical_name : .\WinDevDialogBox.WDW
+     type : 2
+   -
+     name : WIN_Insert
+     identifier : 0x49db631e00008e35
+     internal_properties : CAAAAAgAAABo5lBMeyCIk1wwlDZPY/je3vOtDbW7fmWOd/Bzmn+dS+kFxjnTLdOL+SOdG5tVLaNt9Q==
+     physical_name : .\WIN_Insert.wdw
+     type : 2
+  other_elements : []
+  net_assemblies : []
+  uwp_api : []
+  external_components : []
+  internal_components : []
+ report_and_queries_enabled : false
+ common_generation_directory : true
+ languages :
+  - en-GB
+ code_elements :
+  internal_properties : CAAAAAgAAAA4Nt6ccopHRlplqTk5uU/Pl9CfWt4Cr+b6HgKecOoiDRXACGX4LfzmBnBT6Kk8ROygkWJrWWYDae0GU2+b
+  type_code : 0
+  p_codes :
+   -
+     internal_properties : CAAAAAgAAAANK99aT578pqrY5vHKk6We4QlF1n4phI60i5kiJ2ajIXqY8ANw+K+Ev0qF5XyF7/X5nkR47wx/A9HQAdXUtV09qS9IbkPPF7nTWSaUTtcQidvXNTL45w==
+     code : |1-
+      
+      // Global variable of the window
+      gpclEditor is cEditor dynamic = Null
+      
+      CASE EXCEPTION:
+      Error(<§@00000000000000000000§>)
+     type : 196608
+   -
+     type : 196621
+   -
+     type : 196627
+     enabled : false
+  orphans :
+   -
+     name : WD Controlling word processor
+     identifier : 0x4c47058307b59d5c
+     code_elements :
+      type_code : 159
+      p_codes : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+rad :
+ internal_properties : CAAAAAgAAABhIL0UXeZmxDJxY3Xy0Q==
+project_explorer :
+ explorer_type : project
+resources :
+ string_res :
+  identifier : 0x0
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text :
+      en-GB : "Error: Check whether the text editor is still running"
+     index : 0
+custom_note :
+ internal_properties : CAAAAAgAAAAd98VSJfHHqE3P0QHwrwdhn7ig8dWBR6valpUTgnAMTVXiDg==

@@ -1,0 +1,502 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : cEditor
+ major_version : 28
+ minor_version : 0
+ type : 4
+ description : ""
+ subtype : 0
+class :
+ identifier : 0x186d0a4603893b5b
+ internal_properties : CAAAAAgAAAB2/vstTMCJbS/hlxjFxirSqKvCUuv8YxgpWyl7S3iA
+ code_elements :
+  internal_properties : CAAAAAgAAABdjcYxgqHteNRpJDexHClw7sll5jtLNwzTYpbnAYKTMFdaxZLkIljQk0kVYNWHtGsh4dxP9H39KPZYhVM/Ht6pHaUXbnnRNg==
+  type_code : 10
+  p_codes :
+   -
+     internal_properties : CAAAAAgAAABzRaU9b4F/VtFqh8hsZwbfsSvubMa3R4sJ8EsmiNVJiZvW2NglwnWhEvlP1oyyS5wBvFjUxhoZ3a10Vwjl66dL4mr7Dm5z+133ybF/gwXJ2eiim7L3dq3Mh19kX2QEtCc24rZsKzNRa8ueTxQ=
+     code : |1+
+      
+      //
+      // Abstract parent class (interface to control a software, either Word or OpenOffice Writer)
+      //
+      cEditor is Class
+      PROTECTED
+      	// Word processor
+      	m_oApplication is object OLE dynamic
+      END
+     type : 131072
+  procedures :
+   -
+     name : Constructor
+     procedure_id : 1760074325195111259
+     type_code : 27
+     code : |1+
+      PROCEDURE Constructor()
+      
+     type : 589824
+   -
+     name : Destructor
+     internal_properties : CAAAAAgAAAABIM2k9JugUsa8TctqzVgySPoERhNK7ElDMP9w0X6tarNZNx2BTjjYSSncz/YWiDebOc4Nwr7HhDeoyHQWDt/16k/irqKIWwKP71H/5Vwp3D/knPGEBX5YBs0GzqCJC9+obIEp4BhSdM8fPftctFs/q8Sh5GKv+KfhAD5ufIRqyGVVBsFlJuBayGdUQdIqgFt7HcYbjG8ggDXIt8pYRAARnABD+Tj4+cLu/gvKz5JNpf/yyuCfOXVMcDXow6xK85hzxigfGTlZOMld8VGLOLs7JnpsTwsU7uL0JBXLUzKMLOMg0p5l3xJgtMCa1fAVc5CpMAJKzu7a4G9PdfinTKc8Upz500Ll8VqJBYKNgUQ7yFub0Wp3a6QK6MR48UcClaEcgTqDjj4p7oOr
+     procedure_id : 1760074325195176795
+     type_code : 28
+     code : |1-
+      PROCEDURE Destructor()
+      
+      CloseDocument()
+     type : 655360
+   -
+     name : SaveAs
+     procedure_id : 1760074325195242331
+     type_code : 12
+     code : |1+
+      // Summary: Save a document under a specific name
+      // Syntax:
+      //SaveAs ([<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (string): Optional path where the document will be saved
+      // Return value:
+      // 	None
+      //// Example:
+      // SaveAs("C:\My Documents\Text.rtf")
+      //
+      PROCEDURE VIRTUAL SaveAs(sFullPath is string <useful> = "")
+      
+     type : 458752
+   -
+     name : Save
+     procedure_id : 1760074325195307867
+     type_code : 12
+     code : |1+
+      // Summary: Saves the current document
+      // Syntax:
+      // Save ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // Save()
+      //
+      PROCEDURE VIRTUAL Save()
+      
+     type : 458752
+   -
+     name : IsModified
+     procedure_id : 1760074325195373403
+     type_code : 12
+     code : |1-
+      // Summary: Indicates whether the document was modified
+      // Syntax:
+      //IsModified ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // IsModified()
+      //
+      PROCEDURE VIRTUAL IsModified()
+     type : 458752
+   -
+     name : CloseDocument
+     procedure_id : 1760074325195438939
+     type_code : 12
+     code : |1+
+      // Summary: Closes the current document
+      // Syntax:
+      //CloseDocument ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // Close()
+      //
+      PROCEDURE VIRTUAL CloseDocument()
+      
+     type : 458752
+   -
+     name : IsOpened
+     procedure_id : 1760074325195504475
+     type_code : 12
+     code : |1-
+      // Summary: Indicates whether the document is opened
+      // Syntax:
+      //[ <Result> = ] IsOpened ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean: // 	None
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL IsOpened()
+      
+      RESULT False
+     type : 458752
+   -
+     name : EditorOpenDocument
+     procedure_id : 1760074325195570011
+     type_code : 12
+     code : |1-
+      // Summary: Opens a document
+      // Syntax:
+      //[ <Result> = ] EditorOpenDocument ( [<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (ANSI string - default value=""): Path of the document
+      // Example:
+      // Open()
+      //
+      // Return value:
+      // 	boolean:    // True if OK, False otherwise
+      PROCEDURE VIRTUAL EditorOpenDocument(sFullPath is strings <useful> ="")
+      
+      RESULT False
+     type : 458752
+   -
+     name : NewDocument
+     procedure_id : 1760074325195635547
+     type_code : 12
+     code : |1+
+      // Summary: New document
+      // Syntax:
+      //NewDocument ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // New()
+      //
+      PROCEDURE VIRTUAL NewDocument()
+      
+     type : 458752
+   -
+     name : Paste
+     procedure_id : 1760074325195701083
+     type_code : 12
+     code : |1+
+      // Sumary: Paste the clipboard content in the document
+      // Syntax:
+      //Paste ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // Paste()
+      //
+      PROCEDURE VIRTUAL Paste()
+      
+     type : 458752
+   -
+     name : Copy
+     procedure_id : 1760074325195766619
+     type_code : 12
+     code : |1+
+      // Summary: Copies the selected text
+      // Syntax:
+      //Copy ([<bToClipboard> is boolean])
+      //
+      // Parameters:
+      //	bToClipboard (boolean - default value=0): The text will be stored in the clipboard if set to True
+      // Return value:
+      // 	None
+      //// Example:
+      // Copy(True)
+      //
+      PROCEDURE VIRTUAL Copy(bToClipboard is boolean <useful> = False)
+      
+     type : 458752
+   -
+     name : Cut
+     procedure_id : 1760074325195832155
+     type_code : 12
+     code : |1+
+      // Summary: Cuts the selected text
+      // Syntax:
+      // Cut ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL Cut()
+      
+     type : 458752
+   -
+     name : Print
+     procedure_id : 1760074325195897691
+     type_code : 12
+     code : |1+
+      // Summary: Prints the current document
+      // Syntax:
+      //Print ([<nNbCopies> is int [, <sPageList> is string]])
+      //
+      // Parameters:
+      // 	nNbCopies (integer - default value=1): Number of copies
+      //	sPageList (string): List of pages
+      // Return value:
+      // 	None
+      //// Example:
+      // Print()
+      //
+      PROCEDURE VIRTUAL Print(nNbCopies is int <useful> = 1, sPageList is string <useful> = "")
+      
+     type : 458752
+   -
+     name : InsertImage
+     procedure_id : 1760074325195963227
+     type_code : 12
+     code : |1+
+      // Summary: Inserts an image into the document
+      // Syntax:
+      //InsertImage ([<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (string): Path of the image
+      // Return value:
+      // 	None
+      //// Example:
+      // InsertImage()
+      //
+      PROCEDURE VIRTUAL InsertImage(sFullPath is string <useful> = "")
+     type : 458752
+   -
+     name : InsertText
+     procedure_id : 1760074325196028763
+     type_code : 12
+     code : |1+
+      // Summary: Inserts some text into the document
+      // Syntax:
+      //InsertText (<sText> is string)
+      //
+      // Parameters:
+      //	sText (string): Text to insert
+      // Return value:
+      // 	None
+      //// Example:
+      // InsertText("This is some text")
+      //
+      PROCEDURE VIRTUAL InsertText(sText is string <useful>)
+      
+     type : 458752
+   -
+     name : SearchReplace
+     internal_properties : CAAAAAgAAABvSX614eMh8nsAu044wyC53wGkMPhRA+cTfk+khNHHZyWIjuzr9GnhLC+/cNRiJc7DftKcgLigcojX3oNSnlw+V5+iMY/Sbj4euKhCiJC2BFX35tm8afz9yrrLkrHXZY7Po30vrHzKLiCyUwg=
+     procedure_id : 1760074325196094299
+     type_code : 12
+     code : |1+
+      // Summary: Finds and replaces a word by another one
+      // Syntax:
+      //SearchReplace (<sWord> is string, <sWordBis> is string)
+      //
+      // Parameters:
+      //	sWord (string): Sought word
+      //	sWordBis (string): Word that replaces it
+      // Return value:
+      // 	None
+      //// Example:
+      // SearchReplacer("word1","word2")
+      //
+      PROCEDURE VIRTUAL SearchReplace(sWord is string <useful>, sWordBis is string <useful>)
+      
+     type : 458752
+   -
+     name : Select
+     procedure_id : 1760074325196159835
+     type_code : 12
+     code : |1+
+      // Summary: Selects some text
+      // Syntax:
+      //Select (<nNbCharac> is int)
+      //
+      // Parameters:
+      //	nNbCharac (integer): Number of characters to select
+      // Return value:
+      // 	None
+      //// Example:
+      // Select(5)
+      //
+      PROCEDURE VIRTUAL Select(nNbCharac is int <useful>)
+      
+      
+      
+     type : 458752
+   -
+     name : SelectAll
+     procedure_id : 1760074325196225371
+     type_code : 12
+     code : |1+
+      // Summary: Selects the entire text found in the document
+      // Syntax:
+      // SelectAll ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // SelectAll()
+      //
+      PROCEDURE VIRTUAL SelectAll()
+      
+     type : 458752
+   -
+     name : EditorInstance
+     internal_properties : CAAAAAgAAABytgve5i7mmSpq/srNLch9bXxAqlDtmfDYOLfE/AUPsrCJmqJD+RJJsWanOgymY6mIRIRQsnv/W+8sBNMjF2oNnHrmILMdbu9WPAT2NMOhxZeo3G0iC2xmrSAn329jIJ255eTMPYPt1h55+nh5SkNudm4M8Bv1CN/QTWKbmFS+G+iwQvtlk4SRvUpiiybCgzKjAU5exMGZK5Oi7SmywHROlGUIbQbRqLv/6paytl/hjmlZ4Pa4m9L3cVzjLn+DeYlQy7OQcJMRFX2Noik=
+     procedure_id : 1760074325196290907
+     type_code : 12
+     code : |1-
+      // Summary: Returns an object instance to handle the editor installed on the computer
+      // Syntax:
+      //[ <Result> = ] EditorInstance ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	cEditor dynamic:    // Instance of cMicrosoftWord or cOpenOfficeWriter
+      //// Example:
+      // EditorInstance()
+      //
+      PROCEDURE GLOBAL EditorInstance()
+      
+      // Local variable
+      pclEditor is cEditor dynamic = Null
+      
+      // Are the two of them installed?
+      IF cOpenOfficeWriter.Available() AND cMicrosoftWord.Available() THEN
+      	//1: OpenOffice Writer
+      	//2: Microsoft Word
+      	SWITCH Dialog(<§?19DB754101BB6268§>)
+      		// OpenOffice Writer
+      		CASE 1
+      			pclEditor = new cOpenOfficeWriter	
+      		// Microsoft Word
+      		CASE 2
+      			pclEditor = new cMicrosoftWord	
+      	END
+      	
+      	RESULT pclEditor
+      END
+      
+      // Allocate the available editor
+      IF cOpenOfficeWriter.Available() THEN
+      	pclEditor = new cOpenOfficeWriter	
+      ELSE IF cMicrosoftWord.Available() THEN
+      	pclEditor = new cMicrosoftWord
+      END
+      
+      RESULT pclEditor
+     type : 458752
+   -
+     name : ActiveDocument
+     procedure_id : 1760074325196356443
+     type_code : 12
+     code : |1+
+      // Summary: To find out whether a document is enabled
+      // Syntax:
+      //[ <Result> = ] DocumentEnabled ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean:   // True if enabled, False otherwise
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL ActiveDocument()
+      
+      RESULT False
+     type : 458752
+   -
+     name : SetStyle
+     procedure_id : 1760074325196421979
+     type_code : 12
+     code : |1-
+      // Summary: Changes the writing style
+      // Syntax:
+      //SetStyle ([<sStyle> [, <sFont> [, <nFontSize> [, <nFontColor>]]]])
+      //
+      // Parameters:
+      //	sStyle: Bold, underlined etc.
+      //	sFont: Name of the font
+      //	nFontSize: Size of the font
+      //	nFontColor (default value=-1): Color of the font
+      // Return value:
+      // 	None
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL SetStyle(sStyle <useful> = "", sFont  <useful> = "", nFontSize <useful> = "", nFontColor <useful> = -1)
+     type : 458752
+   -
+     name : Search
+     procedure_id : 1760074325196487515
+     type_code : 12
+     code : |1+
+      // Summary: Finds a character string in the document
+      // Syntax:
+      //Search (<sText> [, <bToTheTop> [, <bFromBeginning>]])
+      //
+      // Parameters:
+      //	sText: Text to find
+      //	bToTheTop (default value=0): Direction of the search (True for a search toward the top)
+      // 	bFromBeginning (default value=1): True for a search from the beginning
+      // Return value:
+      // 	None
+      //// Example:
+      // Search("text",True)
+      //
+      PROCEDURE VIRTUAL Search(sText <useful>, bToTheTop <useful> = False, bFromBeginning <useful> = True)
+      
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : CClasse1
+resources :
+ string_res :
+  identifier : 0x19d9c16f052802d5
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+ dialogs :
+  -
+    identifier : 0x19db754101bb6268
+    internal_properties : CAAAAAgAAADwUNZMoDyEBWB13ZweOD0IJEm8luVUJ+OhEq3yOLp0jBiTfO9URuTSwZ5VDVyFA74/zWsqxFSJjS6CBMBTunRK6jvronnn0nqymg==
+    label :
+     fr-FR : Souhaitez-vous utiliser OpenOffice Writer ou Microsoft Word ?
+     en-GB : Do you want to use OpenOffice Writer or Microsoft Word?
+    image : {}
+    cancel_button : 1
+    buttons :
+     -
+       label :
+        fr-FR : OpenOffice Writer
+        en-GB : OpenOffice Writer
+       image : {}
+       value : 1
+     -
+       label :
+        fr-FR : Microsoft Word
+        en-GB : Microsoft Word
+       image : {}
+       value : 2
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ

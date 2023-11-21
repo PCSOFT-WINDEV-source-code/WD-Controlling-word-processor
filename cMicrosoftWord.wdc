@@ -1,0 +1,885 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : cMicrosoftWord
+ major_version : 28
+ minor_version : 0
+ type : 4
+ description : ""
+ subtype : 0
+class :
+ identifier : 0x19d9c1b9053222eb
+ internal_properties : CAAAAAgAAAB2/vstTMCJbS/hlxjFxirSqKvCUuv8YxgpWyl7S3iA
+ code_elements :
+  internal_properties : CAAAAAgAAADu9V7s+l6ESgkMNzcDbL/h5bPGC0UFG8LmO0vaMoHyZ4D/EJzd1MJ0r8aE8eOhXfMvtnjm9dpkDdjzS7NiJuGGw6DHNx5tZbkXzAxu51COEVoNQG5hEse7e8kFKVf0m5Ahu4JnRhpn8GolZ01LUTj1Yd66pzWRCXQF2AzwvDasy7HHSE4fNRhYckiM/Z2pq5+Q73WXi8dRkqblicrRzGgLgVWQy6pQdouxe9GXVIKkJZ6BsoB0XsdSdjHFSwt//Hd+6EltuQ==
+  type_code : 10
+  p_codes :
+   -
+     internal_properties : CAAAAAgAAACjlbrhXcsXRs9c7ypED+Apw91cLIhNs/ufEhPguCWP3+FMTjgDoLH9+LOT5OjGzd7XOorA4DQ6/IbF8OWYWCY89Qk8oz20UBCsNirEDpqgclPhQBuys97/yBCVbE8pnwwdza95GgwWCszuH0Q=
+     code : |1+
+      
+      //
+      // Implement the cEditor interface for Microsoft Word
+      //
+      cMicrosoftWord is Class
+      	inhérits of cEditor
+      	
+      PRIVATE
+      	m_sCurrentDoc is string // Current document
+      END
+      
+     type : 131072
+  procedures :
+   -
+     name : Constructor
+     internal_properties : CAAAAAgAAACOozqCzUV5/gr06YY2jyjycUuNTy4sPgohFU69WpKDNN1NJA5zFSAIYvksGGrbjRmwty0dOVpt5JNxir3oD/2ia9PkYj1CXDsc2jHnXmCLJVJy6dP6K4wNcVQTB5XgbgJSc+XusviVW8QfHqWGEhgSIaylb+uhM18GWpXshXTt1WABpne2VnhQLu7cdxfdrGr40ug+L/mgmmsTzcXnnDBsLv+kBN753eXs1Ri7amHRO6IXAnlGnMJMMMbp3NxwY//fnRsTQnjBiVPwxxTrCm54DapkMdg5v1tIj4E1nFyFu2o=
+     procedure_id : 1862732921294758635
+     type_code : 27
+     code : |1-
+      PROCEDURE Constructor()
+      
+      // Check whether Word is found and retrieve its version
+      nVersion is int
+      nVersion = WordVersion()
+      
+      IF nVersion = 0 THEN
+      	EndProgram(<§$000f§>,False)
+      	RETURN
+      END
+      
+      IF nVersion < 8 THEN
+      	EndProgram(<§$0010§>,False)
+      	RETURN	
+      END
+      
+      // if Word is not already allocated
+      IF :m_oApplication = Null THEN
+      	// Is Word already started?
+      	:m_oApplication = GetActiveObject("Word.Application")
+      	IF :m_oApplication = Null THEN
+      		// No Word was already opened, allocate one 
+      		:m_oApplication = new object OLE "Word.Application"
+      	END
+      END
+      
+      // Word is visible
+      :m_oApplication>>Visible = True
+     type : 589824
+   -
+     name : Destructor
+     internal_properties : CAAAAAgAAADVJcrxxjMb7fCNr97zO1x8Om0V/56dyWzdqGa3ikO/NB6bI6/Tmh3GIMLZDxWHui0ruq6sI7gHFY4OR9GftEWkQAhCIw1eF+KvjN3V2/1SNdpDVG8iJNNM6y62RXgUaCGrtrTLNeudaj9cPDgHsAuKhxlI2inDnlnzfnrjwhZcpfAIZTa8BDa/DSRhuQ/lIH8hS9eu
+     procedure_id : 1862732921294824171
+     type_code : 28
+     code : |1+
+      PROCEDURE Destructor()
+      
+      Ancestor:Destructor()
+      
+      IF :m_oApplication <> Null THEN
+      	// Exit from Word
+      	WHEN EXCEPTION IN
+      		:m_oApplication>>Quit(False,False,False)
+      		Multitask(-30)
+      	DO 
+      		// The application may be already closed
+      	END
+      	
+      	// Free the pointer
+      	delete :m_oApplication
+      	:m_oApplication = Null
+      END
+      
+     type : 655360
+   -
+     name : Paste
+     internal_properties : CAAAAAgAAACox036/ruh1mni5c7s2LMY+147/OGCrHYbXoOMjac8ojgSur410G9pznfoh3y/jd+V0r6OnAIZUOR9XLDMmlAEK+4fkR6o/hpFMrLvp+j10z4slEvkGtmSHRwMzSJylvOfOiC/ZwnN4pc8En6t2v3oZ2EAqDnjrjGLqjzDDJykRBHZun/bNWcmRP9MtgDcSCeyP+gEcIEkSDgJ8Tbvly7Yqpol0g==
+     procedure_id : 1862817300138091957
+     type_code : 12
+     code : |1-
+      // Sumary: Paste the clipboard content in the document
+      // Syntax:
+      //Paste ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // Paste()
+      //
+      PROCEDURE VIRTUAL Paste()
+      
+      // paste the content of the buffer
+      WHEN EXCEPTION IN
+      	// "Paste" method of Word
+      	:m_oApplication>>Selection>>Paste()
+      DO
+      	RETURN
+      END
+     type : 458752
+   -
+     name : Copy
+     internal_properties : CAAAAAgAAAB/Qxn1hNUXt/wpZbI/fyT8yo11QRhvN2IhJPjbxv9HZE6z5xW5OOPIqIpH6wkn8p27Opoi4V6RUy4mRc07zN083HxOWSOEIfBzSPrSPmIJvkMclaD9gUAzIu17UqP5r/qcj8lIlFQOnbK/fcn22XITuAJ9x/isfwBqqRsUaT+nUh0FIstjLV8mlMNiUtY4EZau7XEE
+     procedure_id : 1862817407512299638
+     type_code : 12
+     code : |1-
+      // Summary: Copies the selected text
+      // Syntax:
+      //Copy ([<bToClipboard> is boolean])
+      //
+      // Parameters:
+      //	bToClipboard (boolean - default value=0): The text will be stored in the clipboard if set to True
+      // Return value:
+      // 	None
+      //// Example:
+      // Copy(True)
+      //
+      PROCEDURE VIRTUAL Copy(bToClipboard is boolean = False)
+      
+      // Copy the selection
+      WHEN EXCEPTION IN
+      	// "Copy" method of Word
+      	:m_oApplication>>Selection>>Copy()
+      	
+      	IF bToClipboard THEN
+      		ToClipboard(:m_oApplication>>Selection>>Text)
+      	END
+      DO
+      	RETURN
+      END
+     type : 458752
+   -
+     name : Cut
+     internal_properties : CAAAAAgAAADY6hzW8fQFPsRrGIKm0EpfjgA/dIXDhWLvEErBTWGU2CYNi5qcN4MRfZ27OrMaiFrn9FqlYdZF1fgIZ4j3rBw+/QGP3bJ7DK8bbn01XfBAQqLKqbuYtz2J+OlmyyiTkIp5hY3Bi3RhzWZ9ulZnpV0N53jVkkXW2Kr0fd6DgPk+mjCBkFqUh4a06gvTYyvIN9MFSYhF/Q==
+     procedure_id : 1862817476231858004
+     type_code : 12
+     code : |1-
+      // Summary: Cuts the selected text
+      // Syntax:
+      // Cut ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL Cut()
+      
+      // We "cut" the selection
+      WHEN EXCEPTION IN
+      	// "Cut" method of Word
+      	:m_oApplication>>Selection>>Cut()
+      DO
+      	RETURN
+      END
+     type : 458752
+   -
+     name : Save
+     procedure_id : 1862817544951416198
+     type_code : 12
+     code : |1+
+      // Summary: Saves the current document
+      // Syntax:
+      // Save ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // Save()
+      //
+      PROCEDURE VIRTUAL Save()
+      
+      // save the current document
+      :m_oApplication>>ActiveDocument>>Save()
+      
+     type : 458752
+   -
+     name : SaveAs
+     internal_properties : CAAAAAgAAAD7SZm0h9H0uO1XKxdgpSMDl2N6iWmQCLcoYIihwzA07FuLkylWeSb0hs7OVY1hoWtypSwTu0hBN9AayT/h/y1kYa6IhlwwzwB4JYjuj+idmwtYmXq0aZGpXA8/kFwrHBhj1Jlwe3iJorEzIzf336froV0xP3/mHOO3dS3yWJFq4XnJo8IF4LRBOga7GATzY7ANy/DeE/iHz7Hh1N3xECHpjgujz2AVPhk14q7bzFB4Ue/EaA==
+     procedure_id : 1862817648030655505
+     type_code : 12
+     code : |1-
+      // Summary: Save a document under a specific name
+      // Syntax:
+      //SaveAs ([<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (string): Optional path where the document will be saved
+      // Return value:
+      // 	None
+      //// Example:
+      // SaveAs("C:\My Documents\Text.rtf")
+      //
+      PROCEDURE VIRTUAL SaveAs(sFullPath is string <useful> = "")
+      
+      // Variable
+      sDocumentName is string
+      
+      // Select or create a Word file
+      sDocumentName=fSelect("","",<§$0001§>,...
+      <§$0002§>+TAB+"*.DOC","DOC",...
+      fselCreate+fselExist)
+      
+      // No selected file
+      IF sDocumentName="" THEN RETURN
+      
+      // Save the document
+      WHEN EXCEPTION IN
+      	// save the document
+      	// 2nd parameter wdDocumentFormat = 0 (standard Word format)
+      	:m_oApplication>>ActiveDocument>>SaveAs(sDocumentName,0)
+      	:m_sCurrentDoc=sDocumentName		
+      DO
+      	RETURN		
+      END
+      
+      // This document becomes the current document
+      :m_sCurrentDoc = sDocumentName
+     type : 458752
+   -
+     name : IsModified
+     procedure_id : 1862817927203594167
+     type_code : 12
+     code : |1+
+      // Summary: Indicates whether the document was modified
+      // Syntax:
+      //IsModified ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL IsModified()
+      
+     type : 458752
+   -
+     name : IsOpened
+     procedure_id : 1862818008808057858
+     type_code : 12
+     code : |1-
+      // Summary: Indicates whether a document is opened
+      // Syntax:
+      //[ <Result> = ] IsOpened ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean: // True if opened, False otherwise
+      //// Example:
+      // IsOpened()
+      //
+      PROCEDURE VIRTUAL IsOpened()
+      
+      IF m_sCurrentDoc <> "" THEN
+      	RESULT True
+      ELSE
+      	RESULT False
+      END
+     type : 458752
+   -
+     name : CloseDocument
+     internal_properties : CAAAAAgAAABYA3VRhWOK0aCLH7ZuEG9qWoypHWU2mfWlA/6GyLLFYRnX9bDeNjKBQo05DIirCKt8XVG75zGTP5MbeOVWXpxv1nCWVim200XurUPOfCjDsGNYQPN6ZCgR/sAmMxNhExFBLBD8uSFTS7vTReQXmzzpTZj8aXbTd9Z3y0HXH/1Sb0rI
+     procedure_id : 1862818077527615677
+     type_code : 12
+     code : |1-
+      // Summary: Closes the current document
+      // Syntax:
+      //CloseDocument ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // Close()
+      //
+      PROCEDURE VIRTUAL CloseDocument()
+      
+      // close the current document
+      WHEN EXCEPTION IN
+      	// Close the active window
+      	:m_oApplication>>ActiveWindow>>Close(False)
+      DO
+      	RETURN
+      END
+      
+      // no other current document
+      :m_sCurrentDoc=""
+      
+      CASE EXCEPTION:
+      // No action, the document may have been closed manually
+     type : 458752
+   -
+     name : Print
+     internal_properties : CAAAAAgAAAAqfDrgqK61gCLX+Cjo6FKvoGANCPu1vbxtDHonr3HcgKwhnZpSFcffu0kPSAWqKLJZxNQ9GzD1swb8bzpNIIi652nFwVQBCM3pAqqiIN9Taavd1ET3tj6O/c43gPvC64FeYCiOXn/2XvfOBwMq5JTgOFMAo3QluZPttjeQ62hROUGQ9//3GgMxF9iIHIoLohIvc6K7iw==
+     procedure_id : 1862818137657237216
+     type_code : 12
+     code : |1+
+      // Summary: Prints the current document
+      // Syntax:
+      //Print ([<nNbCopies> is int [, <sPageList> is string]])
+      //
+      // Parameters:
+      // 	nNbCopies (integer - default value=1): Number of copies
+      //	sPageList (string): List of pages
+      // Return value:
+      // 	None
+      //// Example:
+      // Print()
+      //
+      PROCEDURE VIRTUAL Print(nNbCopies is int <useful> = 1, sPageList is string <useful> = "")
+      
+      // print the current document
+      WHEN EXCEPTION IN
+      	// Call the print feature of Word
+      	:m_oApplication>>Application>>PrintOut()
+      DO
+      	RETURN
+      END
+     type : 458752
+   -
+     name : InsertImage
+     internal_properties : CAAAAAgAAAACJNLonl5haDb/TOTcDJZjRCjdvIdtEeyZ7F6zW8XQvKiJ7T6mJSuvd5kz/NmWRBZlHHQZd/Cx25p0S84J/Kz+w4HlveApZK1lanw4WulRZ1kLomJJwLQQM6QRBm10eYdk9p4E8IkMeB3kUfnMZhI+tkkO4R4/30Xr1IneJeIXlw9u/eUJDIGbheaagjzdEOg3e7qTow==
+     procedure_id : 1862818193491825267
+     type_code : 12
+     code : |1+
+      // Summary: Inserts an image into the document
+      // Syntax:
+      //InsertImage ([<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (string): Path of the image
+      // Return value:
+      // 	None
+      //// Example:
+      // InsertImage()
+      //
+      PROCEDURE VIRTUAL InsertImage(sFullPath is string="")
+      
+      // Variable
+      sImagePath is string
+      
+      // Insert an image at cursor location
+      IF sFullPath ~= "" THEN
+      	sImagePath = fImageSelect(fCurrentDir(),"","Select an image.","JPEG (*.JPG)"+ TAB +"*.jpg"+ CR +"BMP (*.BMP)"+ TAB +"*.bmp")
+      ELSE
+      	sImagePath = sFullPath
+      END
+      
+      // Selected image?
+      IF sImagePath <> "" THEN
+      	// Check the selection
+      	WHEN EXCEPTION IN
+      		:m_oApplication>>Selection	
+      	DO
+      		Info(<§$0005§>)
+      		RETURN
+      	END
+      	
+      	WHEN EXCEPTION IN
+      		:m_oApplication>>ActiveDocument>>Shapes>>AddPicture(sImagePath, False, True,*,*,*,*,:m_oApplication>>Selection>>Range())
+      	DO
+      		RETURN	
+      	END
+      END
+     type : 458752
+   -
+     name : InsertText
+     procedure_id : 1862818262211383446
+     type_code : 12
+     code : |1+
+      // Summary: Inserts some text into the document
+      // Syntax:
+      //InsertText (<sText> is string)
+      //
+      // Parameters:
+      //	sText (string): Text to insert
+      // Return value:
+      // 	None
+      //// Example:
+      // InsertText("This is some text")
+      //
+      PROCEDURE VIRTUAL InsertText(sText is string)
+      
+      // insert a row at cursor location
+      :m_oApplication>>Selection>>Text=sText
+     type : 458752
+   -
+     name : NewDocument
+     internal_properties : CAAAAAgAAAC8YadZTtbHFGEq/t4ViC1Ja/FCeZ+KiTbrMX/Rbs1LbE/KVSjKAM8x7JvanLCqz6GdpPcn4ciQ9+ljKVJrlCl0KVYaSwqEmlAj9Ps/1e8RTlkyUtlDBGTTYGSEn2N4aeu04YwtqD2Un/LeVjy8BKjqjkYsNGT5YbZOvOKjEcpDMizStqs23XSBMc3SNhnCCWFOub834Laujts7R1o04aEWK3P/
+     procedure_id : 1862818326635973765
+     type_code : 12
+     code : |1-
+      // Summary: New document
+      // Syntax:
+      //NewDocument ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //// Example:
+      // NewDocument()
+      //
+      PROCEDURE VIRTUAL NewDocument()
+      
+      // create a new document
+      WHEN EXCEPTION IN
+      	// Opens a new document
+      	:m_oApplication>>Documents>>Add()
+      DO
+      	//if an exception is triggered, it means that Word is no longer active, therefore we must re-create an OLE object and redo an add of the document
+      	:m_oApplication = new object OLE "Word.Application"
+      	:m_oApplication>>Documents>>Add()
+      	// Word is visible
+      	:m_oApplication>>Visible = True
+      END
+      
+      // This document has no name yet
+      :m_sCurrentDoc = ""
+     type : 458752
+   -
+     name : OpenDocument
+     internal_properties : CAAAAAgAAADA7+UT1h7rkAuMO1jqKuVifWQNMru14PrhtFd+L9G2RA5MoN4h5IcdRG2EQVqZo/XfgIBSzHJpZDb3zG4GVKrmzQRF4cpEBrK7sFL1Oao3fbQmUx4RpVALasXDEKOxw44OYRP+4AC4DzA5GRn+qS6vqjwbxxrCiQK4qzcyEWd9Q5SMrV6EfKIrGSjn1YWnZmHA5R6uGk/2YtZ/zxhhFW/vQjJNOg==
+     procedure_id : 1862818386765595414
+     type_code : 12
+     code : |1-
+      // Summary: Opens a document
+      // Syntax:
+      //[ <Result> = ] OpenDocument ([<sFullPath> is string])
+      //
+      // Parameters:
+      //	sFullPath (string): Path of the document
+      // Return value:
+      // 	boolean:     // True if OK, False otherwise
+      //// Example:
+      // Open()
+      //
+      PROCEDURE VIRTUAL EditorOpenDocument(sFullPath is string="")
+      
+      // open a document
+      // sFullPath is the document to open (optional -> picker)
+      
+      IF sFullPath="" THEN
+      	// Select or create a Word file
+      	sFullPath=fSelect("","",<§$0008§>,...
+      	<§$0002§>+TAB+"*.DOC","DOC",...
+      	fselOpen)
+      	
+      	// No selected file
+      	IF sFullPath="" THEN RESULT True
+      END
+      
+      WHEN EXCEPTION IN
+      	// Open the document passed in parameter
+      	:m_oApplication>>Documents>>Open(sFullPath)
+      DO
+      	RESULT False
+      END
+      
+      // This document becomes the current document
+      :m_sCurrentDoc = sFullPath
+      
+      RESULT True
+     type : 458752
+   -
+     name : SearchReplace
+     internal_properties : CAAAAAgAAAB4Fz3IBJOtrvHa/dbkUNtQwzYDpZkU9IKRxNd247na8A7MPP6xxOMtLL3cYfZhRwEnYOQStCr9tBZHhPZyrI5KbRQhGbIkolLrgMLF9Yqj6aQWTThvB8q9mE+9GlEjdSys102ArsKCGd7zWysUe3B9gJr9iXgs8+zWtUncF2H3OWLKZxgynsyN/wrZJ7OJAf5qFzCs+LlcwABhOY4n63oKeur1gg==
+     procedure_id : 1862818455485088291
+     type_code : 12
+     code : |1-
+      // Summary: Finds and replaces a word by another one
+      // Syntax:
+      //SearchReplace (<sWord> is string, <sWordBis> is string)
+      //
+      // Parameters:
+      //	sWord (string): Sought word
+      //	sWordBis (string): Word that replaces it
+      // Return value:
+      // 	None
+      //// Example:
+      // SearchReplacer("word1","word2")
+      //
+      PROCEDURE VIRTUAL SearchReplace(sWords is string, sWordBis is string)
+      
+      // Call the Search/Replace feature of Word
+      // sWords is the sought string
+      // sWordBis is the string that will replace the other one
+      
+      // check the selection
+      WHEN EXCEPTION IN
+      	:m_oApplication>>Selection	
+      DO
+      	Info(<§$0005§>)	
+      	RETURN
+      END
+      
+      WHEN EXCEPTION IN
+      	:m_oApplication>>Selection>>Find>>Execute(sWords,False,True,False,False,False,True,1,False,sWordBis,2)
+      	//   1: WdFindContinue 
+      	//   2: WdReplaceAll 
+      DO
+      	RETURN	
+      END
+     type : 458752
+   -
+     name : Select
+     procedure_id : 1862818532794583327
+     type_code : 12
+     code : |1-
+      // Summary: Selects some text
+      // Syntax:
+      //Select (<nNbCharac> is int)
+      //
+      // Parameters:
+      //	nNbCharac (integer): Number of characters to select
+      // Return value:
+      // 	None
+      //// Example:
+      // Select(5)
+      //
+      PROCEDURE VIRTUAL Select(nNbCharac is int <useful>)
+     type : 458752
+   -
+     name : SelectAll
+     procedure_id : 1862818618694013923
+     type_code : 12
+     code : |1-
+      // Summary: Selects the entire text found in the document
+      // Syntax:
+      // SelectAll ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      //
+      // Example:
+      // SelectAll()
+      //
+      PROCEDURE VIRTUAL SelectAll()
+      
+      :m_oApplication>>ActiveDocument>>Content>>Select()
+     type : 458752
+   -
+     name : Available
+     internal_properties : CAAAAAgAAABl138w8TDHRH0rxw+pzBGguTiWjE+o/Kxzuukd/EUS5M5KihallbCg3pw+gyXxUdniBwINXRxbTyQ8Ua0BX936zWTGeC6g5Ty4O8CUS6ThpRsqy3CO1cNBGG6chQmQsbWOLxJVcEWc9xrWRAhAkHQ0CMROMHj/MwiYFGqHPb5HwlgsFFdybU/qtyVQjbEIA1lPDgaOZ391p+Q6YIimnZaTQjB6O4IWfEdjqOC9F+iU9yU61g==
+     procedure_id : 1863108606299460178
+     type_code : 12
+     code : |1-
+      // Summary: Indicates whether Microsoft Word is available
+      // Syntax:
+      //[ <Result> = ] Available ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean: // True if available, False otherwise
+      //// Example:
+      // Available()
+      //
+      PROCEDURE GLOBAL Available()
+      
+      // Local variables
+      sKey, sSubKey 	are strings
+      nVersion 			is int 	= 0
+      bUserKey			is boolean	= True
+      sValue 			is string
+      
+      // Checks the presence of Office
+      sKey = RegistryFirstSubKey("HKEY_CURRENT_USER\Software\Microsoft\Office\")
+      IF sKey ~= "" THEN 
+      	// Checks the presence of Office
+      	sKey = RegistryFirstSubKey("HKEY_LOCAL_MACHINE\Software\Microsoft\Office\")
+      	bUserKey = False
+      END
+      
+      // If Office is not installed on the computer, then Word cannot be found either
+      IF sKey ~= "" THEN RESULT False
+      
+      // If Office is found on the computer: checks the presence of the program
+      WHILE sKey <> ""
+      	// First sub-key of the program
+      	sSubKey = RegistryFirstSubKey(sKey+"\Word\")
+      	// If the program is found, retrieve its version
+      	IF sSubKey <> "" THEN
+      		// Keep the latest version
+      		nVersion = Max(Val(ExtractString(sKey,1,"\",FromEnd)),nVersion)		
+      	END
+      	
+      	// Next key
+      	sKey = RegistryNextKey(sKey)
+      END
+      
+      IF nVersion <> 0 THEN
+      	// Check whether the executable is found
+      	IF bUserKey = True THEN
+      		sKey = "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Office\" + nVersion + ".0\Word\Options"
+      		sValue = RegistryQueryValue(sKey,"PROGRAMDIR")
+      	ELSE
+      		sKey = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\" + nVersion + ".0\Common\InstallRoot"		
+      		sValue  = RegistryQueryValue(sKey,"Path")
+      	END	
+      	
+      	
+      	IF fFileExist(CompleteDir(sValue) + "WINWORD.exe") THEN
+      		RESULT True
+      	ELSE
+      		RESULT False
+      	END
+      ELSE
+      	RESULT False
+      END
+     type : 458752
+   -
+     name : SetStyle
+     procedure_id : 1863172889107968872
+     type_code : 12
+     code : |1-
+      // Summary: Changes the writing style
+      // Syntax:
+      //SetStyle ([<sStyle> [, <sFont> [, <nFontSize> [, <nFontColor>]]]])
+      //
+      // Parameters:
+      //	sStyle: Bold, underlined etc.
+      //	sFont: Name of the font
+      //	nFontSize: Size of the font
+      //	nFontColor (default value=-1): Color of the font
+      // Return value:
+      // 	None
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL SetStyle(sStyle,sFont,nFontSize=0,nFontColor=-1) <overload>
+      
+      // Check the selection
+      WHEN EXCEPTION IN
+      	:m_oApplication>>Selection	
+      DO
+      	Info(<§$000b§>)	
+      	RETURN
+      END
+      
+      SWITCH True
+      	CASE sStyle = iItalic: // Italic style
+      		IF :m_oApplication>>Selection>>Font>>Italic = True THEN
+      			:m_oApplication>>Selection>>Font>>Italic = False
+      		ELSE
+      			:m_oApplication>>Selection>>Font>>Italic = True
+      		END
+      		
+      	CASE sStyle = iUnderlined: // Underlined style
+      		IF :m_oApplication>>Selection>>Font>>Underline = True THEN
+      			:m_oApplication>>Selection>>Font>>Underline = False
+      		ELSE
+      			:m_oApplication>>Selection>>Font>>Underline = True
+      		END
+      		
+      	CASE sStyle = iBold: // Bold style
+      		IF :m_oApplication>>Selection>>Font>>Bold = True THEN
+      			:m_oApplication>>Selection>>Font>>Bold = False
+      		ELSE
+      			:m_oApplication>>Selection>>Font>>Bold = True
+      		END
+      		
+      	CASE nFontSize > 0:// Size of the font
+      		:m_oApplication>>Selection>>Font>>Size = nFontSize	 
+      		
+      	CASE sFont <> "" :    // Font
+      		:m_oApplication>>Selection>>Font>>Name = sFont
+      		
+      	CASE nFontColor <> -1: // If a font color is specified
+      		:m_oApplication>>Selection>>Font>>Color = nFontColor
+      END
+     type : 458752
+   -
+     name : WordVersion
+     internal_properties : CAAAAAgAAABgvVN0Oujp6g8nmqLmxRmnFUVisPzBLTRprSk5JIupHF06ZQxCBs87mgfwDGL8OV0vMONP3baQdUfPz8LhUj/s9y6S/14+fvp9TIEHk1Xj4mP5mwKU6U9cDdN1TNDZjog7aOWmoRIvGE9xm/V1wUULaampUelyoBcDh9+0Gs+0JxMJL8SfWveSGngP9/oUvHc4S+d1clE21lvcxoUZqiaqXy8j
+     procedure_id : 1863196618798890626
+     type_code : 12
+     code : |1+
+      // Summary: Returns the version of Microsoft Word installed on the current computer
+      // Syntax:
+      //[ <Result> = ] WordVersion ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	integer: // Version number
+      //// Example:
+      // WordVersion()
+      //
+      PROCEDURE PRIVATE WordVersion()
+      
+      // Local variables
+      sKey, sSubKey are strings
+      nVersion is int = 0
+      
+      // Check whether Office is installed
+      sKey = RegistryFirstSubKey("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\")
+      
+      // If Office is not installed on the computer, then Word cannot be found either
+      IF sKey~="" THEN RESULT 0
+      
+      // If Office is installed on the computer, check the presence of the program
+      WHILE sKey<>""
+      	// First sub-key of the program
+      	sSubKey = RegistryFirstSubKey(sKey+"\Word\")
+      	// If the program is found, retrieve its version
+      	IF sSubKey<>"" THEN
+      		// Keep the most recent version only
+      		nVersion = Max(Val(ExtractString(sKey,1,"\",FromEnd)),nVersion)
+      	END
+      	// Next key
+      	sKey = RegistryNextKey(sKey)
+      END
+      
+      RESULT nVersion
+     type : 458752
+   -
+     name : ActiveDocument
+     procedure_id : 1863198487150601291
+     type_code : 12
+     code : |1-
+      // Summary: To find out whether a document is enabled
+      // Syntax:
+      //[ <Result> = ] DocumentEnabled ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	boolean:   // True if enabled, False otherwise
+      //// Example:
+      // Indicate an example.
+      //
+      PROCEDURE VIRTUAL ActiveDocument()
+      
+      RESULT (:m_oApplication>>Selection <> Null)
+     type : 458752
+   -
+     name : Search
+     procedure_id : 1866504954954338051
+     type_code : 12
+     code : |1+
+      // Summary: Finds a character string in the document
+      // Syntax:
+      //Search (<sText> [, <bToTheTop> [, <bFromBeginning>]])
+      //
+      // Parameters:
+      //	sText: Text to find
+      //	bToTheTop (default value=0): Direction of the search (True for a search toward the top)
+      // 	bFromBeginning (default value=1): True for a search from the beginning
+      // Return value:
+      // 	None
+      //// Example:
+      // Search("text",True)
+      //
+      PROCEDURE VIRTUAL Search(sText,bToTheTop=False,bFromBeginning=True)
+      
+      IF bFromBeginning THEN
+      	:m_oApplication>>Selection>>GoTo(1,1,"1")	
+      END
+      
+      :m_oApplication>>Selection>>Find>>ClearFormatting()
+      :m_oApplication>>Selection>>Find>>Forward=NOT bToTheTop
+      :m_oApplication>>Selection>>Find>>Text=sText
+      :m_oApplication>>Selection>>Find>>MatchWildcards=OLETrue
+      :m_oApplication>>Selection>>Find>>Execute()
+      
+      IF :m_oApplication>>Selection>>Find>>Found = 0 THEN
+      	:m_oApplication>>Selection>>GoTo(1,1,"1")
+      	:m_oApplication>>Selection>>Find>>Execute()	
+      END
+      
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : CClasse1
+resources :
+ string_res :
+  identifier : 0x19d9c1b9052f22eb
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text :
+      en-GB : Uanble to save the document.
+     index : 0
+   -
+     text :
+      en-GB : Save as...
+     index : 1
+   -
+     text :
+      en-GB : Word Document (*.DOC)
+     index : 2
+   -
+     text :
+      en-GB : Unable to close the document.
+     index : 3
+   -
+     text :
+      en-GB : Unable to print the document.
+     index : 4
+   -
+     text :
+      en-GB : Select a section of text.
+     index : 5
+   -
+     text :
+      en-GB : Unable to insert the image.
+     index : 6
+   -
+     text :
+      en-GB : Unable to open a new document.
+     index : 7
+   -
+     text :
+      en-GB : Select a document...
+     index : 8
+   -
+     text :
+      en-GB : Unable to open the document.
+     index : 9
+   -
+     text :
+      en-GB : Unable to perform Search/Replace.
+     index : 10
+   -
+     text :
+      en-GB : Select a section of text.
+     index : 11
+   -
+     text :
+      en-GB : Unable to apply the font.
+     index : 12
+   -
+     text :
+      en-GB : Select a section of text.
+     index : 13
+   -
+     text :
+      en-GB : Unable to write the line.
+     index : 14
+   -
+     text :
+      en-GB : "Word is not installed on this computer, you cannot use this class!"
+     index : 15
+   -
+     text :
+      en-GB : "To use this class, Word 97 or later must be installed!"
+     index : 16
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ
+associated_test :
+ name : TEST_cMicrosoftWord.wxt
